@@ -10,7 +10,7 @@ const Home: React.FC = () => {
     {
       icon: DollarSign,
       value: "$200",
-      label: "Average lifetime Revenue Per User (ARPU)",
+      label: "Average Revenue Per User (ARPU)",
     },
   ];
 

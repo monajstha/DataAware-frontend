@@ -6,6 +6,7 @@ import Home from "../pages/HomePage";
 import Categories from "../pages/CategoriesPage";
 import PrivacyGuide from "../pages/PrivacyGuidePage";
 import PrivacyEconomics from "../pages/PrivacyEconomicsPage";
+import About from "../pages/AboutPage";
 
 const router = createBrowserRouter([
   //   {
@@ -35,8 +36,12 @@ const router = createBrowserRouter([
         element: <PrivacyGuide />,
       },
       {
-        path: "privacy-economics",
+        path: "/privacy-economics",
         element: <PrivacyEconomics />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
     ],
   },
