@@ -9,10 +9,6 @@ import PrivacyEconomics from "../pages/PrivacyEconomicsPage";
 import About from "../pages/AboutPage";
 
 const router = createBrowserRouter([
-  //   {
-  //     path: "/login",
-  //     element: <LoginPage />,
-  //   },
   {
     element: (
       <>
