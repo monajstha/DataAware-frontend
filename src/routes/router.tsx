@@ -7,6 +7,8 @@ import Categories from "../pages/CategoriesPage";
 import PrivacyGuide from "../pages/PrivacyGuidePage";
 import PrivacyEconomics from "../pages/PrivacyEconomicsPage";
 import About from "../pages/AboutPage";
+import Scenarios from "../pages/ScenariosPage";
+import GuidedLearning from "../pages/GuidedLearningPage";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/scenarios",
+        element: <Scenarios />,
+      },
+      {
+        path: "/guided-learning",
+        element: <GuidedLearning />,
       },
     ],
   },
