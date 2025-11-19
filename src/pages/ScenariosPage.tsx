@@ -15,17 +15,14 @@ import {
   Smartphone,
   DollarSign,
   Eye,
-  Radio,
   TrendingUp,
   User,
   Target,
   AlertTriangle,
   CheckCircle,
   Clock,
-  BarChart3,
   Database,
   Zap,
-  X,
 } from "lucide-react";
 
 // Types
@@ -75,7 +72,6 @@ const Scenarios: React.FC = () => {
   const [timelineStage, setTimelineStage] = useState<
     "day1" | "week1" | "month1" | "month6" | "year1"
   >("day1");
-  const [timelineScenario, setTimelineScenario] = useState<string[]>([]);
 
   // Analytics tracking
   const [analytics, setAnalytics] = useState({
@@ -653,7 +649,7 @@ const Scenarios: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-16 md:py-20">
+      <section className="bg-linear-to-br from-indigo-600 to-purple-700 text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -748,7 +744,7 @@ const Scenarios: React.FC = () => {
                         className="bg-white border-2 border-gray-200 hover:border-indigo-400 rounded-2xl p-8 text-left transition-all hover:shadow-lg group"
                       >
                         <div
-                          className={`w-16 h-16 bg-gradient-to-br ${scenario.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+                          className={`w-16 h-16 bg-linear-to-br ${scenario.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
                         >
                           <scenario.icon className="w-8 h-8 text-white" />
                         </div>
@@ -782,7 +778,7 @@ const Scenarios: React.FC = () => {
                     </div>
                     <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
-                        className={`h-full bg-gradient-to-r ${selectedScenario.color} transition-all duration-500`}
+                        className={`h-full bg-linear-to-br ${selectedScenario.color} transition-all duration-500`}
                         style={{
                           width: `${
                             ((currentStep + 1) /
@@ -803,7 +799,7 @@ const Scenarios: React.FC = () => {
                     className="bg-white border border-gray-200 rounded-2xl p-8 md:p-12"
                   >
                     <div
-                      className={`w-20 h-20 bg-gradient-to-br ${selectedScenario.color} rounded-xl flex items-center justify-center mb-6`}
+                      className={`w-20 h-20 bg-linear-to-br ${selectedScenario.color} rounded-xl flex items-center justify-center mb-6`}
                     >
                       <selectedScenario.icon className="w-10 h-10 text-white" />
                     </div>
@@ -879,7 +875,7 @@ const Scenarios: React.FC = () => {
                               key={idx}
                               className="flex items-start gap-2 text-blue-800"
                             >
-                              <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0" />
+                              <CheckCircle className="w-4 h-4 mt-1 shrink-0" />
                               <span>{data}</span>
                             </li>
                           ))}
@@ -1105,7 +1101,7 @@ const Scenarios: React.FC = () => {
                               >
                                 <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                                   <div
-                                    className="h-full bg-gradient-to-r from-orange-400 to-red-500"
+                                    className="h-full bg-linear-to-br from-orange-400 to-red-500"
                                     style={{ width: `${perm.risk * 100}%` }}
                                   />
                                 </div>
@@ -1119,7 +1115,7 @@ const Scenarios: React.FC = () => {
                       </div>
 
                       {/* Digital Twin */}
-                      <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6">
+                      <div className="bg-linear-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6">
                         <div className="flex items-center gap-2 mb-4">
                           <User className="w-5 h-5 text-purple-600" />
                           <h3 className="font-semibold text-gray-900">
@@ -1149,7 +1145,7 @@ const Scenarios: React.FC = () => {
                       </div>
 
                       {/* Ad Targeting */}
-                      <div className="bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6">
+                      <div className="bg-linear-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6">
                         <div className="flex items-center gap-2 mb-4">
                           <Target className="w-5 h-5 text-orange-600" />
                           <h3 className="font-semibold text-gray-900">
@@ -1265,7 +1261,7 @@ const Scenarios: React.FC = () => {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-6"
+                  className="bg-linear-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <Database className="w-6 h-6 text-blue-600" />
@@ -1279,7 +1275,7 @@ const Scenarios: React.FC = () => {
                   {/* Mini chart */}
                   <div className="mt-6 h-20 flex items-end gap-1">
                     {["day1", "week1", "month1", "month6", "year1"].map(
-                      (stage, idx) => {
+                      (stage) => {
                         const stages = {
                           day1: 15,
                           week1: 105,
@@ -1310,7 +1306,7 @@ const Scenarios: React.FC = () => {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6"
+                  className="bg-linear-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <Eye className="w-6 h-6 text-purple-600" />
@@ -1346,7 +1342,7 @@ const Scenarios: React.FC = () => {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6"
+                  className="bg-linear-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <DollarSign className="w-6 h-6 text-green-600" />
@@ -1412,7 +1408,7 @@ const Scenarios: React.FC = () => {
               </motion.div>
 
               {/* Visual Timeline */}
-              <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200 rounded-xl p-8">
+              <div className="mt-8 bg-linear-to-br from-blue-50 to-purple-50 border border-gray-200 rounded-xl p-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
                   Your Data Journey
                 </h3>
