@@ -22,6 +22,9 @@ import { useSessionTracking } from "../hooks/useSession";
 import ResearchConsentModal from "../components/ResearchConsentModal";
 import modules from "../constants/modules";
 import assessmentQuestions from "../constants/assessmentQuestions";
+import { api } from "../api";
+import { AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 
 const GuidedLearning: React.FC = () => {
   const [stage, setStage] = useState<
@@ -116,19 +119,21 @@ const GuidedLearning: React.FC = () => {
 
       // For now, just log and show success
       try {
-        // const response = await fetch('http://localhost:3000/api/research-data', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(researchData)
-        // });
-
-        setDataSubmitted(true);
-        alert(
-          "Thank you for contributing to privacy education research! Your data has been submitted."
+        const response: AxiosResponse = await api.post(
+          "/api/assessment-insights",
+          researchData
         );
+        if (response.status === 201) {
+          setDataSubmitted(true);
+          toast.success(
+            "Thank you for contributing to privacy education research! Your data has been submitted."
+          );
+        }
       } catch (error) {
         console.error("Error submitting data:", error);
-        alert("There was an error submitting your data. Please try again.");
+        toast.error(
+          "There was an error submitting your data. Please try again."
+        );
       }
     }
 
