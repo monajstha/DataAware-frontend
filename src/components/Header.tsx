@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import {  useNavigate } from "react-router-dom";
-
-
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,8 +24,6 @@ const Header: React.FC = () => {
       return () => document.removeEventListener("click", handleClickOutside);
     }
   }, [openDropdown]);
-
-  
 
   const navItems = [
     { path: "/", label: "Home", dropdown: null },
@@ -56,10 +52,10 @@ const Header: React.FC = () => {
       e?.preventDefault();
       return;
     }
-    console.log({path});
+    console.log({ path });
     setActivePath(path);
     setMenuOpen(false);
-    navigate(path)
+    navigate(path);
   };
 
   const handleMouseEnter = (label: string) => {

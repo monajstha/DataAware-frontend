@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   GraduationCap,
@@ -11,40 +11,17 @@ import {
   TrendingUp,
   BookOpen,
   Shield,
-  Eye,
-  Radio,
-  DollarSign,
   Lightbulb,
   Target,
   Database,
   Brain,
   X,
-  MessageSquare,
   Play,
 } from "lucide-react";
-
-interface Question {
-  id: number;
-  question: string;
-  type: "multiple" | "truefalse";
-  options?: string[];
-  correctAnswer: number;
-  topic: string;
-  explanation: string;
-}
-
-interface Module {
-  id: number;
-  title: string;
-  icon: any;
-  color: string;
-  summary: string;
-  keyPoints: string[];
-  examples: string[];
-  protectionTips: string[];
-  linkTo: string;
-  quiz?: Question[];
-}
+import { useSessionTracking } from "../hooks/useSession";
+import ResearchConsentModal from "../components/ResearchConsentModal";
+import modules from "../constants/modules";
+import assessmentQuestions from "../constants/assessmentQuestions";
 
 const GuidedLearning: React.FC = () => {
   const [stage, setStage] = useState<
@@ -60,425 +37,13 @@ const GuidedLearning: React.FC = () => {
   }>({});
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<{ [key: number]: number }>({});
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedback, setFeedback] = useState("");
 
-  // Assessment questions - Demystifying privacy for general users
-  const assessmentQuestions: Question[] = [
-    {
-      id: 1,
-      question:
-        "You mention wanting to buy running shoes to your friend in person (not online). The next day, you see ads for running shoes on Instagram. What's most likely happening?",
-      type: "multiple",
-      options: [
-        "Your phone's microphone is always listening to your conversations",
-        "Apps are tracking your location, contacts, and browsing to predict your interests",
-        "It's just a coincidence",
-        "Someone in your contacts searched for shoes",
-      ],
-      correctAnswer: 1,
-      topic: "Myths",
-      explanation:
-        "While it feels like your phone is listening, it's more likely that apps tracked your location (were you near a running store?), noticed you searched for fitness content, or saw your friend's searches. This combination creates eerily accurate predictions without actually listening.",
-    },
-    {
-      id: 2,
-      question:
-        "True or False: If you deny an app's permission request, that app cannot collect any data about you.",
-      type: "truefalse",
-      options: ["True", "False"],
-      correctAnswer: 1,
-      topic: "Misconceptions",
-      explanation:
-        "False. Apps can still collect lots of data without permissions: your IP address, device type, how long you use the app, which buttons you tap, and anything you voluntarily type or post. Permissions just control access to specific phone features.",
-    },
-    {
-      id: 3,
-      question:
-        "You search for beach vacations on Google, then later see vacation ads on a completely different app. How is this possible?",
-      type: "multiple",
-      options: [
-        "The apps are secretly sharing your screen",
-        "Advertising networks track you across different apps using identifiers",
-        "Your internet provider is selling your searches",
-        "All apps can see what you do in other apps",
-      ],
-      correctAnswer: 1,
-      topic: "Tracking",
-      explanation:
-        "Advertising networks like Google Ads use a unique identifier on your phone to follow you across different apps and websites. When you search in one place, they show related ads everywhere else you go.",
-    },
-    {
-      id: 4,
-      question:
-        "Your fitness app knows when you're walking, running, or driving without you telling it. How does it know?",
-      type: "multiple",
-      options: [
-        "It watches your screen activity",
-        "It uses motion sensors that detect your movement patterns",
-        "It guesses based on the time of day",
-        "Someone else told it",
-      ],
-      correctAnswer: 1,
-      topic: "Sensors",
-      explanation:
-        "Your phone has motion sensors (accelerometer, gyroscope) that detect how you're moving. Apps can access this data without special permissions and use it to figure out if you're walking, running, driving, or even what type of exercise you're doing.",
-    },
-    {
-      id: 5,
-      question:
-        "True or False: Closing or force-stopping an app completely stops it from collecting your data.",
-      type: "truefalse",
-      options: ["True", "False"],
-      correctAnswer: 1,
-      topic: "Misconceptions",
-      explanation:
-        "False. Many apps can still collect data in the background, especially if you granted 'Always Allow' for location. Some apps also sync data when you reopen them. To truly stop data collection, you need to revoke permissions or delete the app.",
-    },
-    {
-      id: 6,
-      question:
-        "A free social media app makes billions in profit despite charging users nothing. What's really happening?",
-      type: "multiple",
-      options: [
-        "They have generous investors who love losing money",
-        "They make money from premium features only",
-        "They collect your data and sell insights to advertisers",
-        "They earn from app store placements",
-      ],
-      correctAnswer: 2,
-      topic: "Economics",
-      explanation:
-        "When an app is free, YOU are the product. These apps collect detailed data about your behavior, interests, and connections, then sell access to advertisers who want to target people exactly like you. Your attention and data have real monetary value.",
-    },
-    {
-      id: 7,
-      question:
-        "You use 'incognito mode' on your browser while shopping. Does this keep your shopping activity completely private?",
-      type: "multiple",
-      options: [
-        "Yes, incognito mode makes you completely invisible",
-        "No, it only hides from your local device - websites, apps, and your internet provider can still track you",
-        "Yes, but only if you also turn off WiFi",
-        "No one can track anything you do on your phone",
-      ],
-      correctAnswer: 1,
-      topic: "Misconceptions",
-      explanation:
-        "Incognito mode only prevents your phone from saving your browsing history locally. The websites you visit, your internet provider, and any apps you use can still track everything you do. It's private from people using your device, not from companies online.",
-    },
-    {
-      id: 8,
-      question:
-        "A navigation app asks for 'Always Allow' location access. What does this really mean for your privacy?",
-      type: "multiple",
-      options: [
-        "It only tracks you while navigating",
-        "It tracks everywhere you go 24/7, even when you're not using the app",
-        "It just shows your current city",
-        "Location tracking stops when you close the app",
-      ],
-      correctAnswer: 1,
-      topic: "Permissions",
-      explanation:
-        "'Always Allow' means the app can track your location constantly, even in the background. This reveals where you live, work, shop, and socialize. Choose 'While Using App' instead - navigation still works, but tracking stops when you close the app.",
-    },
-    {
-      id: 9,
-      question:
-        "True or False: Deleting an app from your phone immediately removes all the data that app collected about you.",
-      type: "truefalse",
-      options: ["True", "False"],
-      correctAnswer: 1,
-      topic: "Misconceptions",
-      explanation:
-        "False. Deleting the app removes it from your phone, but the company still has all the data they collected about you stored on their servers. To truly delete your data, you usually need to contact the company or use account deletion features before uninstalling.",
-    },
-    {
-      id: 10,
-      question:
-        "Your friend asks: 'I have nothing to hide, so why should I care about privacy?' What's the best response?",
-      type: "multiple",
-      options: [
-        "You're right, only criminals need privacy",
-        "Privacy isn't about hiding - it's about controlling who profits from your information and preventing manipulation",
-        "Privacy doesn't matter anymore in the digital age",
-        "You should only care if you're doing something wrong",
-      ],
-      correctAnswer: 1,
-      topic: "Understanding",
-      explanation:
-        "Privacy isn't about hiding bad things. It's about having control over your personal information, preventing manipulation through targeted ads and content, avoiding discrimination (like higher prices based on your data), and not letting companies profit from your life without your informed consent.",
-    },
-  ];
-
-  // Learning modules
-  const modules: Module[] = [
-    {
-      id: 1,
-      title: "Data Collection Basics",
-      icon: Database,
-      color: "from-blue-500 to-cyan-500",
-      summary:
-        "Mobile apps collect data through three primary mechanisms: permissions (explicit access requests), tracking SDKs (embedded third-party code), and sensors (device hardware). Understanding these mechanisms is fundamental to privacy awareness.",
-      keyPoints: [
-        "Apps request permissions to access sensitive device features like location, camera, and contacts",
-        "Tracking SDKs are third-party libraries embedded in apps that collect behavioral data",
-        "Device sensors like accelerometers and gyroscopes can infer activity and behavior patterns",
-        "Data collection often happens in the background without user awareness",
-      ],
-      examples: [
-        "A weather app requesting location to show local forecasts",
-        "A social media app embedding Facebook Analytics SDK to track user engagement",
-        "A fitness app using accelerometer data to count steps",
-      ],
-      protectionTips: [
-        "Review permissions before installing apps",
-        "Regularly audit which apps have access to sensitive data",
-        "Understand that 'free' apps monetize through data collection",
-      ],
-      linkTo: "/categories",
-      quiz: [
-        {
-          id: 1,
-          question:
-            "Which of these is NOT a primary data collection mechanism?",
-          type: "multiple",
-          options: ["Permissions", "Tracking SDKs", "Sensors", "App Reviews"],
-          correctAnswer: 3,
-          topic: "Basics",
-          explanation:
-            "App reviews are user-generated content, not a data collection mechanism. The three primary mechanisms are permissions, tracking SDKs, and sensors.",
-        },
-        {
-          id: 2,
-          question:
-            "True or False: Apps always notify you when collecting data through sensors.",
-          type: "truefalse",
-          options: ["True", "False"],
-          correctAnswer: 1,
-          topic: "Basics",
-          explanation:
-            "False. Sensor data collection often happens silently in the background without explicit user notification.",
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Permissions & Privacy Risks",
-      icon: Shield,
-      color: "from-purple-500 to-pink-500",
-      summary:
-        "Android permissions control app access to sensitive device features. High-risk permissions like location, camera, and microphone enable extensive surveillance and profiling. Understanding permission risk levels helps users make informed decisions.",
-      keyPoints: [
-        "Location permissions enable 24/7 tracking and routine identification",
-        "Camera and microphone access allow visual and audio surveillance",
-        "Contact access reveals social networks and relationships",
-        "Storage permissions expose photos, documents, and metadata",
-        "Permission combinations amplify tracking capabilities",
-      ],
-      examples: [
-        "A navigation app with 'Always Allow' location can track you even when not in use",
-        "A shopping app with camera access can scan and analyze products in your home",
-        "A messaging app with contact access can map your entire social graph",
-      ],
-      protectionTips: [
-        "Use 'While Using App' instead of 'Always Allow' for location",
-        "Revoke permissions for apps you rarely use",
-        "Question why apps need certain permissions for their core functionality",
-      ],
-      linkTo: "/privacy-guide",
-      quiz: [
-        {
-          id: 1,
-          question: "Which permission combination is most privacy-invasive?",
-          type: "multiple",
-          options: [
-            "Vibrate + Internet",
-            "Location + Contacts + Microphone",
-            "Flashlight + Storage",
-            "Notifications + Network State",
-          ],
-          correctAnswer: 1,
-          topic: "Permissions",
-          explanation:
-            "Location + Contacts + Microphone enables comprehensive surveillance: tracking where you are, who you know, and what you say.",
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: "Trackers & Profiling",
-      icon: Eye,
-      color: "from-orange-500 to-red-500",
-      summary:
-        "Tracking SDKs are third-party software libraries embedded in apps that collect behavioral data for advertising, analytics, and profiling. They enable cross-app tracking, creating comprehensive user profiles across your entire digital footprint.",
-      keyPoints: [
-        "Common trackers include Google Ads SDK, Facebook Analytics, Firebase, and Appsflyer",
-        "Trackers collect device identifiers, behavioral patterns, and engagement metrics",
-        "Cross-app tracking links your behavior across multiple applications",
-        "Data is shared with advertisers, data brokers, and analytics companies",
-        "Ad networks build psychographic profiles for targeted advertising",
-      ],
-      examples: [
-        "Google Ads SDK tracking your app usage to show relevant ads across the internet",
-        "Facebook Analytics monitoring your behavior even in non-Facebook apps",
-        "Mixpanel tracking every button click and screen view to optimize engagement",
-      ],
-      protectionTips: [
-        "Reset your advertising ID monthly to break tracking continuity",
-        "Opt out of personalized ads in device settings",
-        "Use privacy-focused app alternatives when available",
-      ],
-      linkTo: "/privacy-guide",
-      quiz: [
-        {
-          id: 1,
-          question: "What enables trackers to follow you across multiple apps?",
-          type: "multiple",
-          options: [
-            "Your email address",
-            "Advertising identifiers (IDFA/AAID)",
-            "Your phone number",
-            "Your device brand",
-          ],
-          correctAnswer: 1,
-          topic: "Trackers",
-          explanation:
-            "Advertising identifiers like IDFA (iOS) and AAID (Android) are unique IDs that enable cross-app tracking across your device.",
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: "Sensors & Inference",
-      icon: Radio,
-      color: "from-green-500 to-emerald-500",
-      summary:
-        "Device sensors like accelerometers, gyroscopes, and magnetometers collect motion and orientation data. While seemingly innocuous, sensor data enables sophisticated inference of activities, behaviors, and even personal characteristics without explicit permissions.",
-      keyPoints: [
-        "Accelerometers detect movement patterns and activity types",
-        "Gyroscopes measure device rotation and orientation",
-        "Magnetometers determine compass direction for navigation",
-        "Sensor fusion combines data to infer complex behaviors",
-        "No explicit permissions required for most sensor access",
-      ],
-      examples: [
-        "Accelerometer data revealing if you're walking, running, driving, or stationary",
-        "Step counter sensors identifying your daily activity patterns and locations",
-        "Proximity sensors detecting when your phone is near your face during calls",
-      ],
-      protectionTips: [
-        "Be aware that sensors don't require permissions but still collect data",
-        "Limit background app activity to reduce sensor data collection",
-        "Understand that 'free' apps may monetize sensor-derived insights",
-      ],
-      linkTo: "/privacy-guide",
-      quiz: [
-        {
-          id: 1,
-          question:
-            "True or False: Apps need explicit permission to access accelerometer data.",
-          type: "truefalse",
-          options: ["True", "False"],
-          correctAnswer: 1,
-          topic: "Sensors",
-          explanation:
-            "False. Most motion sensors like accelerometers can be accessed without explicit user permissions, making them a privacy concern.",
-        },
-      ],
-    },
-    {
-      id: 5,
-      title: "Economic Value of Data",
-      icon: DollarSign,
-      color: "from-yellow-500 to-orange-500",
-      summary:
-        "Personal data is a commodity with real economic value. Location data, browsing behavior, and purchase history are bought and sold in massive data broker markets. Understanding your data's worth reveals the true business model behind 'free' apps.",
-      keyPoints: [
-        "Location data is worth $1.80+ per user annually",
-        "Social media platforms generate $200-500 per US user per year",
-        "Data broker industry valued at $278 billion globally in 2024",
-        "High-quality data commands premium prices from advertisers",
-        "Your digital profile is traded across multiple platforms and partners",
-      ],
-      examples: [
-        "A navigation app selling your location patterns to retailers for $10.80/year",
-        "Social media platforms monetizing your engagement data for targeted ads",
-        "Shopping apps analyzing purchase behavior to predict future spending",
-      ],
-      protectionTips: [
-        "Recognize that 'free' apps profit from your data",
-        "Consider paid alternatives that don't rely on data monetization",
-        "Understand your data rights under GDPR, CCPA, and other privacy laws",
-      ],
-      linkTo: "/privacy-economics",
-      quiz: [
-        {
-          id: 1,
-          question:
-            "What makes location data particularly valuable to advertisers?",
-          type: "multiple",
-          options: [
-            "It's easy to collect",
-            "It reveals routines, habits, income level, and lifestyle",
-            "It's required by law",
-            "It uses less battery",
-          ],
-          correctAnswer: 1,
-          topic: "Economics",
-          explanation:
-            "Location data reveals where you live, work, shop, and socialize—enabling precise demographic and lifestyle targeting.",
-        },
-      ],
-    },
-    {
-      id: 6,
-      title: "Protection Strategies",
-      icon: Lightbulb,
-      color: "from-indigo-500 to-purple-500",
-      summary:
-        "Privacy protection requires proactive strategies: permission management, tracker blocking, advertising controls, and informed app selection. While perfect privacy is impossible, these techniques significantly reduce data exposure and tracking.",
-      keyPoints: [
-        "Review and revoke unnecessary permissions regularly",
-        "Use 'While Using App' instead of 'Always Allow' for location",
-        "Reset advertising identifiers monthly",
-        "Disable ad personalization in device settings",
-        "Choose privacy-focused alternatives when available",
-        "Read privacy policies before installing apps",
-      ],
-      examples: [
-        "Setting location to 'While Using' for food delivery apps",
-        "Using privacy-focused browsers that block trackers",
-        "Choosing Signal over WhatsApp for messaging privacy",
-      ],
-      protectionTips: [
-        "Android: Settings > Privacy > Permission Manager to review all permissions",
-        "iOS: Settings > Privacy & Security to manage access",
-        "Regularly audit installed apps and remove unused ones",
-        "Enable 'Ask App Not to Track' on iOS",
-        "Use DNS-based ad blockers for system-wide protection",
-      ],
-      linkTo: "/privacy-guide",
-      quiz: [
-        {
-          id: 1,
-          question: "Which action provides the MOST privacy protection?",
-          type: "multiple",
-          options: [
-            "Changing your wallpaper",
-            "Regularly reviewing and revoking permissions",
-            "Updating app names",
-            "Restarting your phone daily",
-          ],
-          correctAnswer: 1,
-          topic: "Protection",
-          explanation:
-            "Regularly auditing and revoking unnecessary permissions is one of the most effective ways to limit data collection.",
-        },
-      ],
-    },
-  ];
+  // Session tracking
+  const sessionTracking = useSessionTracking();
+  const [assessmentStartTime, setAssessmentStartTime] = useState<number>(0);
+  const [moduleStartTime, setModuleStartTime] = useState<number>(0);
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [dataSubmitted, setDataSubmitted] = useState(false);
 
   // Calculate scores
   const calculateScore = (answers: { [key: number]: number }) => {
@@ -493,9 +58,88 @@ const GuidedLearning: React.FC = () => {
   const postTestScore = calculateScore(postTestAnswers);
   const improvement = postTestScore - preTestScore;
 
+  // Track assessment start time
+  useEffect(() => {
+    if (stage === "pre-test" || stage === "post-test") {
+      setAssessmentStartTime(Date.now());
+    }
+  }, [stage]);
+
+  // Track module start time
+  useEffect(() => {
+    if (stage === "learning") {
+      setModuleStartTime(Date.now());
+    }
+  }, [currentModule, stage]);
+
+  // Save pre-assessment to session
+  const savePreAssessment = () => {
+    const timeSpent = Math.floor((Date.now() - assessmentStartTime) / 1000);
+    sessionTracking.setPreAssessment({
+      score: preTestScore,
+      answers: assessmentQuestions.map((q) => preTestAnswers[q.id]),
+      timeSpent,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  // Save post-assessment to session
+  const savePostAssessment = () => {
+    const timeSpent = Math.floor((Date.now() - assessmentStartTime) / 1000);
+    sessionTracking.setPostAssessment({
+      score: postTestScore,
+      answers: assessmentQuestions.map((q) => postTestAnswers[q.id]),
+      timeSpent,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  // Handle consent modal submission
+  const handleConsentSubmit = async (consentData: any) => {
+    if (consentData.consent) {
+      // Prepare data for backend
+      const sessionData = sessionTracking.getSessionData();
+      const researchData = {
+        ...sessionData,
+        userName: consentData.userName,
+        feedback: consentData.feedback,
+        userContext: {
+          ageRange: consentData.demographics.ageRange,
+          techProficiency: consentData.demographics.techProficiency,
+          priorPrivacyKnowledge: consentData.demographics.priorPrivacyKnowledge,
+          referralSource: consentData.demographics.referralSource,
+        },
+      };
+
+      // TODO: Send to backend
+      console.log("Research data to submit:", researchData);
+
+      // For now, just log and show success
+      try {
+        // const response = await fetch('http://localhost:3000/api/research-data', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(researchData)
+        // });
+
+        setDataSubmitted(true);
+        alert(
+          "Thank you for contributing to privacy education research! Your data has been submitted."
+        );
+      } catch (error) {
+        console.error("Error submitting data:", error);
+        alert("There was an error submitting your data. Please try again.");
+      }
+    }
+
+    setShowConsentModal(false);
+  };
+
   // Module completion
   const markModuleComplete = (moduleId: number) => {
     if (!completedModules.includes(moduleId)) {
+      const timeSpent = Math.floor((Date.now() - moduleStartTime) / 1000);
+      sessionTracking.addCompletedModule(moduleId, timeSpent);
       setCompletedModules([...completedModules, moduleId]);
     }
   };
@@ -593,8 +237,10 @@ const GuidedLearning: React.FC = () => {
           <button
             onClick={() => {
               if (isPreTest) {
+                savePreAssessment();
                 setStage("learning");
               } else {
+                savePostAssessment();
                 setStage("results");
               }
             }}
@@ -612,7 +258,7 @@ const GuidedLearning: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-linear-to-br from-indigo-600 to-purple-700 text-white py-16 md:py-20">
+      <section className="flex justify-center bg-linear-to-br from-indigo-600 to-purple-700 text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -917,7 +563,10 @@ const GuidedLearning: React.FC = () => {
                   {/* Optional Quiz */}
                   {!showQuiz && modules[currentModule].quiz && (
                     <button
-                      onClick={() => setShowQuiz(true)}
+                      onClick={() => {
+                        setShowQuiz(true);
+                        sessionTracking.addQuizAttempt();
+                      }}
                       className="w-full py-4 bg-yellow-50 hover:bg-yellow-100 border-2 border-yellow-300 text-yellow-900 font-semibold rounded-lg transition-all mb-4"
                     >
                       Test Your Knowledge (Optional)
@@ -1190,11 +839,12 @@ const GuidedLearning: React.FC = () => {
                   </h3>
                   <div className="space-y-3">
                     {[
-                      "Permissions",
-                      "Trackers",
-                      "Economics",
+                      "Myths",
+                      "Misconceptions",
+                      "Tracking",
                       "Sensors",
-                      "Protection",
+                      "Economics",
+                      "Understanding",
                     ].map((topic) => {
                       const topicQuestions = assessmentQuestions.filter(
                         (q) => q.topic === topic
@@ -1229,41 +879,53 @@ const GuidedLearning: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Feedback */}
-                {!showFeedback ? (
-                  <button
-                    onClick={() => setShowFeedback(true)}
-                    className="flex items-center gap-2 mx-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors"
-                  >
-                    <MessageSquare className="w-5 h-5" />
-                    Provide Feedback
-                  </button>
-                ) : (
-                  <div className="bg-white border border-gray-200 rounded-xl p-6">
-                    <h3 className="font-semibold text-gray-900 mb-4 text-left">
-                      Help Us Improve
-                    </h3>
-                    <textarea
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                      placeholder="Share your thoughts about the learning experience, content clarity, or suggestions for improvement..."
-                      className="w-full h-32 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
-                    />
+                {/* Research Contribution Section */}
+                {!dataSubmitted && (
+                  <div className="bg-linear-to-br from-indigo-50 to-blue-50 border-2 border-indigo-300 rounded-xl p-8 mb-8">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <Database className="w-8 h-8 text-indigo-600" />
+                      <h3 className="text-2xl font-bold text-gray-900">
+                        Help Improve Privacy Education
+                      </h3>
+                    </div>
+                    <p className="text-gray-700 mb-6 leading-relaxed">
+                      Your learning journey can help improve privacy education
+                      for future users. Would you like to share your anonymous
+                      results for academic research?
+                    </p>
                     <button
-                      onClick={() => {
-                        console.log("Feedback submitted:", feedback);
-                        alert(
-                          "Thank you for your feedback! It helps us improve the learning experience."
-                        );
-                        setShowFeedback(false);
-                      }}
-                      className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors"
+                      onClick={() => setShowConsentModal(true)}
+                      className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-lg"
                     >
-                      Submit Feedback
+                      Contribute to Research
                     </button>
                   </div>
                 )}
+
+                {dataSubmitted && (
+                  <div className="bg-green-50 border-2 border-green-300 rounded-xl p-6 mb-8">
+                    <div className="flex items-center justify-center gap-3">
+                      <CheckCircle className="w-8 h-8 text-green-600" />
+                      <p className="text-lg font-semibold text-green-900">
+                        Thank you for contributing to privacy education
+                        research!
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {/* Consent Modal */}
+              {showConsentModal && (
+                <ResearchConsentModal
+                  isOpen={showConsentModal}
+                  onClose={() => setShowConsentModal(false)}
+                  onSubmit={handleConsentSubmit}
+                  preScore={preTestScore}
+                  postScore={postTestScore}
+                  improvement={improvement}
+                />
+              )}
 
               {/* Next Steps */}
               <div className="grid md:grid-cols-3 gap-6">
