@@ -39,7 +39,6 @@ const ResearchConsentModal: React.FC<ResearchConsentModalProps> = ({
   improvement,
 }) => {
   const [consent, setConsent] = useState(false);
-  const [userName, setUserName] = useState("");
   const [feedback, setFeedback] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [techProficiency, setTechProficiency] = useState("");
@@ -49,7 +48,7 @@ const ResearchConsentModal: React.FC<ResearchConsentModalProps> = ({
   const handleSubmit = () => {
     const data: ConsentData = {
       consent,
-      userName: userName.trim() || undefined,
+      userName: undefined,
       feedback: feedback.trim() || undefined,
       demographics: {
         ageRange: ageRange || undefined,
@@ -246,7 +245,7 @@ const ResearchConsentModal: React.FC<ResearchConsentModalProps> = ({
                 </div>
 
                 {/* Name */}
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Your Name (Optional)
                   </label>
@@ -257,7 +256,7 @@ const ResearchConsentModal: React.FC<ResearchConsentModalProps> = ({
                     placeholder="e.g., John Smith"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
                   />
-                </div>
+                </div> */}
 
                 {/* Demographics */}
                 <div className="grid md:grid-cols-2 gap-4">
