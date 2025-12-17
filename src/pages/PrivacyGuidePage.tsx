@@ -220,7 +220,7 @@ const PrivacyGuide: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-linear-to-br from-blue-600 to-blue-700 text-white py-16 md:py-20">
+      <section className="bg-linear-to-br from-blue-50 to-white text-black py-16 md:py-20">
         <div className="flex justify-center max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -231,7 +231,7 @@ const PrivacyGuide: React.FC = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Privacy Guide
             </h1>
-            <p className="text-xl text-blue-50 leading-relaxed">
+            <p className="text-xl text-black leading-relaxed">
               Understanding what data apps collect is the first step to
               protecting your privacy. This guide explains permissions,
               trackers, and sensors—and how to safeguard your personal

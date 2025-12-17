@@ -263,7 +263,7 @@ const GuidedLearning: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="flex justify-center bg-linear-to-br from-indigo-600 to-purple-700 text-white py-16 md:py-20">
+      <section className="flex justify-center bg-linear-to-br from-blue-50 to-white text-black py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -276,7 +276,7 @@ const GuidedLearning: React.FC = () => {
                 Guided Learning Journey
               </h1>
             </div>
-            <p className="text-xl text-indigo-50 leading-relaxed max-w-3xl">
+            <p className="text-xl text-black leading-relaxed max-w-3xl">
               Master mobile privacy through structured learning. Test your
               knowledge, learn essential concepts, and measure your improvement.
             </p>

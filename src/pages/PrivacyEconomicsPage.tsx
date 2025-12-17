@@ -162,7 +162,7 @@ const PrivacyEconomics: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-linear-to-br from-green-600 to-blue-700 text-white py-16 md:py-20">
+      <section className="bg-linear-to-br from-blue-50 to-white text-black py-16 md:py-20">
         <div className="flex justify-center max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -175,7 +175,7 @@ const PrivacyEconomics: React.FC = () => {
                 The Economics of Your Data
               </h1>
             </div>
-            <p className="flex text-xl text-green-50 leading-relaxed max-w-3xl">
+            <p className="flex text-xl text-black leading-relaxed max-w-3xl">
               Your personal data is a commodity with real economic value.
               Understanding what it's worth helps you make informed decisions
               about privacy and sharing.

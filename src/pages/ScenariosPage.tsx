@@ -203,20 +203,19 @@ const Scenarios: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="flex justify-center bg-linear-to-br from-indigo-600 to-purple-700 text-white py-16 md:py-20">
+      <section className="flex justify-center bg-linear-to-br from-blue-50 to-white text-black py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 mb-6">
-              <Play className="w-10 h-10" />
+            <div className="flex justify-center gap-3 mb-6">
               <h1 className="text-4xl md:text-5xl font-bold">
                 Privacy Scenarios
               </h1>
             </div>
-            <p className="text-xl text-indigo-50 leading-relaxed max-w-3xl">
+            <p className="text-xl text-black leading-relaxed max-w-3xl">
               Experience real-world data collection scenarios. See how apps
               track you, build profiles, and monetize your information through
               interactive demonstrations.

@@ -98,7 +98,7 @@ const About: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-linear-to-br from-blue-600 to-indigo-700 text-white py-20 md:py-28">
+      <section className="bg-linear-to-br from-blue-50 to-white text-black py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -108,7 +108,7 @@ const About: React.FC = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               About DataAware
             </h1>
-            <p className="text-xl md:text-2xl text-blue-50 leading-relaxed">
+            <p className="text-xl md:text-2xl text-black leading-relaxed">
               A Research-Driven Educational Platform for Mobile Application
               Privacy Awareness
             </p>
@@ -124,7 +124,7 @@ const About: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex justify-center items-center gap-3 mb-8">
             <BookOpen className="w-8 h-8 text-blue-600" />
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               Project Overview
