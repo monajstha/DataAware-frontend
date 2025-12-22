@@ -13,7 +13,6 @@ import {
   Shield,
   Lightbulb,
   Target,
-  Database,
   Brain,
   X,
   Play,
@@ -884,7 +883,9 @@ const GuidedLearning: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Research Contribution Section */}
+                {/* Commented because survey will be used instead of assessment from artefact itself */}
+
+                {/* Research Contribution Section
                 {!dataSubmitted && (
                   <div className="bg-linear-to-br from-indigo-50 to-blue-50 border-2 border-indigo-300 rounded-xl p-8 mb-8">
                     <div className="flex items-center justify-center gap-3 mb-4">
@@ -905,7 +906,7 @@ const GuidedLearning: React.FC = () => {
                       Contribute to Research
                     </button>
                   </div>
-                )}
+                )} */}
 
                 {dataSubmitted && (
                   <div className="bg-green-50 border-2 border-green-300 rounded-xl p-6 mb-8">
