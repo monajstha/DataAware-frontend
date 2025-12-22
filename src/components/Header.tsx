@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activePath, setActivePath] = useState("/");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileDropdowns, setMobileDropdowns] = useState<{
     [key: string]: boolean;
@@ -12,6 +11,7 @@ const Header: React.FC = () => {
   const dropdownTimerRef = useRef<any | null>(null);
 
   const navigate = useNavigate();
+  const activePath = useLocation().pathname;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
       return;
     }
     console.log({ path });
-    setActivePath(path);
+    // setActivePath(path);
     setMenuOpen(false);
     navigate(path);
   };
