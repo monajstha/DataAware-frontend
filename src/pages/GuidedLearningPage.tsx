@@ -243,9 +243,11 @@ const GuidedLearning: React.FC = () => {
               if (isPreTest) {
                 savePreAssessment();
                 setStage("learning");
+                window.scrollTo({ top: 0, behavior: "smooth" });
               } else {
                 savePostAssessment();
                 setStage("results");
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
             disabled={!allAnswered}
@@ -342,7 +344,10 @@ const GuidedLearning: React.FC = () => {
                 </div>
 
                 <button
-                  onClick={() => setStage("pre-test")}
+                  onClick={() => {
+                    setStage("pre-test");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                   className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors"
                 >
                   Begin Pre-Assessment
@@ -693,6 +698,7 @@ const GuidedLearning: React.FC = () => {
                           setCurrentModule(currentModule + 1);
                           setShowQuiz(false);
                           setQuizAnswers({});
+                          window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                         className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
                       >
@@ -704,6 +710,7 @@ const GuidedLearning: React.FC = () => {
                         onClick={() => {
                           markModuleComplete(modules[currentModule].id);
                           setStage("post-test");
+                          window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                         className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                       >

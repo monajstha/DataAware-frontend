@@ -9,11 +9,13 @@ import PrivacyEconomics from "../pages/PrivacyEconomicsPage";
 import About from "../pages/AboutPage";
 import Scenarios from "../pages/ScenariosPage";
 import GuidedLearning from "../pages/GuidedLearningPage";
+import ScrollToTop from "../components/ScrollToTop";
 
 const router = createBrowserRouter([
   {
     element: (
       <>
+        <ScrollToTop />
         <Header />
         <Outlet />
         <Footer />
