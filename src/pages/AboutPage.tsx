@@ -14,6 +14,7 @@ import {
   Search,
   BarChart3,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const About: React.FC = () => {
   const objectives = [
@@ -447,24 +448,21 @@ const About: React.FC = () => {
             and learning about the economic value of your personal information.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => (window.location.href = "/categories")}
-              className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg"
-            >
-              View Categories
-            </button>
-            <button
-              onClick={() => (window.location.href = "/privacy-guide")}
-              className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-gray-900 font-semibold px-8 py-4 rounded-lg transition-colors border-2 border-gray-300"
-            >
-              Privacy Guide
-            </button>
-            <button
-              onClick={() => (window.location.href = "/privacy-economics")}
-              className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-gray-900 font-semibold px-8 py-4 rounded-lg transition-colors border-2 border-gray-300"
-            >
-              Data Economics
-            </button>
+            <Link to="/categories">
+              <button className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg">
+                View Categories
+              </button>
+            </Link>
+            <Link to="/privacy-guide">
+              <button className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-gray-900 font-semibold px-8 py-4 rounded-lg transition-colors border-2 border-gray-300">
+                Privacy Guide
+              </button>
+            </Link>
+            <Link to="/privacy-economics">
+              <button className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-gray-900 font-semibold px-8 py-4 rounded-lg transition-colors border-2 border-gray-300">
+                Data Economics
+              </button>
+            </Link>
           </div>
         </motion.div>
       </section>
