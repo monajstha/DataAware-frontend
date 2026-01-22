@@ -20,6 +20,7 @@ import {
 import { Sensor, Permission, Tracker } from "../interface/privacy";
 import { TabType, RiskFilter } from "../types";
 import { api } from "../api";
+import { Link } from "react-router-dom";
 
 const PrivacyGuide: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("permissions");
@@ -48,7 +49,7 @@ const PrivacyGuide: React.FC = () => {
 
         if (permData.ok)
           setPermissions(
-            permData.data.permissions || permData.permissions || []
+            permData.data.permissions || permData.permissions || [],
           );
         if (trackData.ok)
           setTrackers(trackData.data.trackers || trackData.trackers || []);
@@ -100,9 +101,9 @@ const PrivacyGuide: React.FC = () => {
 
   // Filter data based on search and risk level
   const filterData = <
-    T extends { name: string; riskScore?: number; sensitivity?: string }
+    T extends { name: string; riskScore?: number; sensitivity?: string },
   >(
-    data: T[]
+    data: T[],
   ): T[] => {
     return data.filter((item) => {
       const matchesSearch = item.name
@@ -443,7 +444,7 @@ const PrivacyGuide: React.FC = () => {
                     </div>
                     <div
                       className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${getRiskColor(
-                        risk
+                        risk,
                       )}`}
                     >
                       <RiskIcon className="w-3 h-3" />
@@ -500,7 +501,7 @@ const PrivacyGuide: React.FC = () => {
                     </div>
                     <div
                       className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${getRiskColor(
-                        risk
+                        risk,
                       )}`}
                     >
                       <RiskIcon className="w-3 h-3" />
@@ -557,7 +558,7 @@ const PrivacyGuide: React.FC = () => {
                     </div>
                     <div
                       className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${getRiskColor(
-                        risk
+                        risk,
                       )}`}
                     >
                       <RiskIcon className="w-3 h-3" />
@@ -597,13 +598,14 @@ const PrivacyGuide: React.FC = () => {
             See how different types of apps use these permissions, trackers, and
             sensors.
           </p>
-          <button
-            onClick={() => (window.location.href = "/categories")}
+          <Link
+            to={"/categories"}
+            // onClick={() => (window.location.href = "/categories")}
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg"
           >
             View App Categories
             <ChevronRight className="w-5 h-5" />
-          </button>
+          </Link>
         </div>
       </section>
 
